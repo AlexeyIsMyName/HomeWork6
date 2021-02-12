@@ -98,21 +98,21 @@
                                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="CMs-ra-S94">
                                                 <rect key="frame" x="66" y="0.0" width="222" height="118"/>
                                                 <subviews>
-                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rXz-FP-aVQ">
+                                                    <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="rXz-FP-aVQ">
                                                         <rect key="frame" x="-2" y="0.0" width="226" height="35"/>
                                                         <color key="tintColor" systemColor="systemRedColor"/>
                                                         <connections>
                                                             <action selector="colorSliderAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="BII-tZ-PP9"/>
                                                         </connections>
                                                     </slider>
-                                                    <slider opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="seR-sy-WCe">
+                                                    <slider opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="seR-sy-WCe">
                                                         <rect key="frame" x="-2" y="42" width="226" height="35"/>
                                                         <color key="tintColor" systemColor="systemGreenColor"/>
                                                         <connections>
                                                             <action selector="colorSliderAction:" destination="BYZ-38-t0r" eventType="valueChanged" id="eEr-Vo-Wra"/>
                                                         </connections>
                                                     </slider>
-                                                    <slider opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="kcg-mO-bZR">
+                                                    <slider opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="kcg-mO-bZR">
                                                         <rect key="frame" x="-2" y="84" width="226" height="35"/>
                                                         <color key="tintColor" systemColor="systemBlueColor"/>
                                                         <connections>
@@ -125,12 +125,21 @@
                                     </stackView>
                                 </subviews>
                             </stackView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UyE-JG-jXt">
+                                <rect key="frame" x="137" y="300" width="46" height="30"/>
+                                <state key="normal" title="Button"/>
+                                <connections>
+                                    <action selector="doneButtonPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="tTt-Vh-Ke5"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                         <color key="backgroundColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="UyE-JG-jXt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8XJ-Zl-1nz"/>
                             <constraint firstAttribute="trailing" secondItem="uMn-L8-B4p" secondAttribute="trailing" constant="16" id="AD1-QT-Kmm"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="centerY" secondItem="uMn-L8-B4p" secondAttribute="bottom" constant="16" id="TvI-Wp-Xj4"/>
+                            <constraint firstItem="UyE-JG-jXt" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="16" id="YVB-aE-hlf"/>
                             <constraint firstItem="uMn-L8-B4p" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="eaG-lN-o3a"/>
                             <constraint firstItem="uMn-L8-B4p" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="u8l-bF-c3F"/>
                         </constraints>

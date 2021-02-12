@@ -21,6 +21,7 @@ class ColorPickerViewController: UIViewController {
     @IBOutlet var blueColorSlider: UISlider!
     
     var mainColor: UIColor!
+    var delegate: SettingsViewControllerDelegate!
     
     // MARK: - Life Cycles Methods
     override func viewWillLayoutSubviews() {
@@ -28,46 +29,63 @@ class ColorPickerViewController: UIViewController {
         refreshAllOnScreen()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super .viewWillAppear(animated)
+    }
+    
     // MARK: - IB Actions
     @IBAction func colorSliderAction(_ sender: UISlider) {
+        mainColor = UIColor(red: CGFloat(redColorSlider.value),
+                            green: CGFloat(greenColorSlider.value),
+                            blue: CGFloat(blueColorSlider.value),
+                            alpha: 1.0)
+        
         refreshColorPresenterViewColor()
         
         switch sender.tag {
-        case 0: redColorTextField.text = getColorString(from: redColorSlider.value)
-        case 1: greenColorTextField.text = getColorString(from: greenColorSlider.value)
-        case 2: blueColorTextField.text = getColorString(from: blueColorSlider.value)
+        case 0: redColorTextField.text = getShortString(from: redColorSlider.value)
+        case 1: greenColorTextField.text = getShortString(from: greenColorSlider.value)
+        case 2: blueColorTextField.text = getShortString(from: blueColorSlider.value)
         default: break
         }
     }
+    
+    @IBAction func doneButtonPressed() {
+        let color = UIColor(red: getCGFloat(from: redColorTextField.text),
+                            green: getCGFloat(from: greenColorTextField.text),
+                            blue: getCGFloat(from: blueColorTextField.text),
+                            alpha: 1.0)
+        
+        delegate.setNewValues(for: color)
+        dismiss(animated: true)
+    }
+    
     
     // MARK: - Private Methods
     private func refreshAllOnScreen() {
         refreshColorPresenterViewColor()
         refreshDataOnLabels()
+        refreshDataOnSliders()
     }
     
     private func refreshColorPresenterViewColor() {
-        colorPresenterView.backgroundColor = UIColor(red: CGFloat(redColorSlider.value),
-                                                     green: CGFloat(greenColorSlider.value),
-                                                     blue: CGFloat(blueColorSlider.value),
-                                                     alpha: 1.0)
+        colorPresenterView.backgroundColor = mainColor
+    }
+    
+    private func refreshDataOnSliders() {
+        redColorSlider.value = Float(getRGBColor(from: colorPresenterView).red)
+        greenColorSlider.value = Float(getRGBColor(from: colorPresenterView).green)
+        blueColorSlider.value = Float(getRGBColor(from: colorPresenterView).blue)
     }
     
     private func refreshDataOnLabels() {
         let colors = getRGBColor(from: colorPresenterView)
-        let red = getShortString(from: colors.red)
-        let green = getShortString(from: colors.green)
-        let blue = getShortString(from: colors.blue)
         
-        redColorTextField.text = red
-        greenColorTextField.text = green
-        blueColorTextField.text = blue
+        redColorTextField.text = getShortString(from: colors.red)
+        greenColorTextField.text = getShortString(from: colors.green)
+        blueColorTextField.text = getShortString(from: colors.blue)
     }
-    
-    private func getColorString(from value: Float) -> String {
-        return String(format: "%.2f", value)
-    }
-    
+
     private func getRGBColor(from view: UIView) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
         var red: CGFloat = 0.5
         var green: CGFloat = 0.5
@@ -84,7 +102,16 @@ class ColorPickerViewController: UIViewController {
         return (red, green, blue)
     }
     
+    private func getShortString(from value: Float) -> String {
+        return String(format: "%.2f", value)
+    }
+    
     private func getShortString(from numberOFcolor: CGFloat) -> String {
         return String(format: "%.2f", numberOFcolor)
+    }
+    
+    private func getCGFloat(from text: String?) -> CGFloat {
+        guard let number = Float(text ?? "") else {return 0.5}
+        return CGFloat(number)
     }
 }
