@@ -60,7 +60,6 @@ class ColorPickerViewController: UIViewController {
         dismiss(animated: true)
     }
     
-    
     // MARK: - Private Methods
     private func refreshAllOnScreen() {
         refreshColorPresenterViewColor()
@@ -73,25 +72,25 @@ class ColorPickerViewController: UIViewController {
     }
     
     private func refreshDataOnSliders() {
-        redColorSlider.value = Float(getRGBColor(from: colorPresenterView).red)
-        greenColorSlider.value = Float(getRGBColor(from: colorPresenterView).green)
-        blueColorSlider.value = Float(getRGBColor(from: colorPresenterView).blue)
+        redColorSlider.value = Float(getRGBColor(from: mainColor).red)
+        greenColorSlider.value = Float(getRGBColor(from: mainColor).green)
+        blueColorSlider.value = Float(getRGBColor(from: mainColor).blue)
     }
     
     private func refreshDataOnLabels() {
-        let colors = getRGBColor(from: colorPresenterView)
+        let colors = getRGBColor(from: mainColor)
         
         redColorTextField.text = getShortString(from: colors.red)
         greenColorTextField.text = getShortString(from: colors.green)
         blueColorTextField.text = getShortString(from: colors.blue)
     }
 
-    private func getRGBColor(from view: UIView) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
+    private func getRGBColor(from color: UIColor) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
         var red: CGFloat = 0.5
         var green: CGFloat = 0.5
         var blue: CGFloat = 0.5
         
-        guard let colors = view.backgroundColor?.cgColor.components else { return (red, green, blue) }
+        guard let colors = color.cgColor.components else { return (red, green, blue) }
         
         if colors.count == 4 {
             red = colors[0]

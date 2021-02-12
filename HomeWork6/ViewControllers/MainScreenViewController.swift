@@ -13,7 +13,10 @@ protocol SettingsViewControllerDelegate {
 
 class MainScreenViewController: UIViewController {
     
-    var mainColor: UIColor = .white
+    private var mainColor = UIColor(red: 1,
+                                    green: 1,
+                                    blue: 1,
+                                    alpha: 1)
     
     override func viewWillAppear(_ animated: Bool) {
         super .viewWillAppear(animated)
