@@ -17,7 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <viewLayoutGuide key="safeArea" id="N75-HG-xYd"/>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     </view>
                     <navigationItem key="navigationItem" id="rX5-Fw-AbP">
                         <barButtonItem key="rightBarButtonItem" image="square.and.pencil" catalog="system" id="6GW-Op-0Lt">
@@ -126,20 +125,21 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UyE-JG-jXt">
-                                <rect key="frame" x="137" y="300" width="46" height="30"/>
-                                <state key="normal" title="Button"/>
+                                <rect key="frame" x="125" y="488" width="70" height="48"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="30"/>
+                                <state key="normal" title="Done"/>
                                 <connections>
                                     <action selector="doneButtonPressed" destination="BYZ-38-t0r" eventType="touchUpInside" id="tTt-Vh-Ke5"/>
                                 </connections>
                             </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
-                        <color key="backgroundColor" red="0.75406885150000003" green="0.75408679249999999" blue="0.75407713649999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <color key="backgroundColor" systemColor="systemGray6Color"/>
                         <constraints>
                             <constraint firstItem="UyE-JG-jXt" firstAttribute="centerX" secondItem="8bC-Xf-vdC" secondAttribute="centerX" id="8XJ-Zl-1nz"/>
                             <constraint firstAttribute="trailing" secondItem="uMn-L8-B4p" secondAttribute="trailing" constant="16" id="AD1-QT-Kmm"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="bottom" secondItem="UyE-JG-jXt" secondAttribute="bottom" constant="32" id="Dmg-k7-F93"/>
                             <constraint firstItem="6Tk-OE-BBY" firstAttribute="centerY" secondItem="uMn-L8-B4p" secondAttribute="bottom" constant="16" id="TvI-Wp-Xj4"/>
-                            <constraint firstItem="UyE-JG-jXt" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="centerY" constant="16" id="YVB-aE-hlf"/>
                             <constraint firstItem="uMn-L8-B4p" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="eaG-lN-o3a"/>
                             <constraint firstItem="uMn-L8-B4p" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="16" id="u8l-bF-c3F"/>
                         </constraints>
@@ -180,11 +180,11 @@
     </scenes>
     <resources>
         <image name="square.and.pencil" catalog="system" width="128" height="115"/>
-        <systemColor name="systemBackgroundColor">
-            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-        </systemColor>
         <systemColor name="systemBlueColor">
             <color red="0.0" green="0.47843137254901963" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGray6Color">
+            <color red="0.94901960784313721" green="0.94901960784313721" blue="0.96862745098039216" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGreenColor">
             <color red="0.20392156862745098" green="0.7803921568627451" blue="0.34901960784313724" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

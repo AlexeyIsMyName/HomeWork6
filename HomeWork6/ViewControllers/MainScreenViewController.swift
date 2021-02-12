@@ -13,9 +13,9 @@ protocol SettingsViewControllerDelegate {
 
 class MainScreenViewController: UIViewController {
     
-    private var mainColor = UIColor(red: 1,
-                                    green: 1,
-                                    blue: 1,
+    private var mainColor = UIColor(red: 0,
+                                    green: 0,
+                                    blue: 0,
                                     alpha: 1)
     
     override func viewWillAppear(_ animated: Bool) {
