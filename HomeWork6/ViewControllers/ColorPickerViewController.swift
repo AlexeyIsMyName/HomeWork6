@@ -36,6 +36,12 @@ class ColorPickerViewController: UIViewController {
         blueColorTextField.delegate = self
     }
     
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        
+        view.endEditing(true)
+    }
+    
     // MARK: - IB Actions
     @IBAction func colorSliderAction(_ sender: UISlider) {
         mainColor = UIColor(red: CGFloat(redColorSlider.value),
