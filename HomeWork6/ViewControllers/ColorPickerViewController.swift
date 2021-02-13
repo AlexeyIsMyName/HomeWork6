@@ -26,7 +26,14 @@ class ColorPickerViewController: UIViewController {
     // MARK: - Life Cycles Methods
     override func viewWillLayoutSubviews() {
         colorPresenterView.layer.cornerRadius = view.frame.height * 0.02
+    }
+    
+    override func viewDidLoad() {
         refreshAllOnScreen()
+        addBtnInKeyboard()
+        redColorTextField.delegate = self
+        greenColorTextField.delegate = self
+        blueColorTextField.delegate = self
     }
     
     // MARK: - IB Actions
@@ -55,6 +62,16 @@ class ColorPickerViewController: UIViewController {
         delegate.setNewValues(for: color)
         dismiss(animated: true)
     }
+    
+    @IBAction func colorTFEditingDidEnd() {
+        mainColor = UIColor(red: CGFloat(redColorTextField.text),
+                            green: CGFloat(greenColorTextField.text),
+                            blue: CGFloat(blueColorTextField.text),
+                            alpha: 1.0)
+        
+        refreshAllOnScreen()
+    }
+    
     
     // MARK: - Private Methods
     private func refreshAllOnScreen() {
@@ -108,4 +125,32 @@ extension CGFloat {
         
         self = CGFloat(number)
     }
+}
+
+extension ColorPickerViewController {
+    private func addBtnInKeyboard() {
+        
+        let toolBar = UIToolbar()
+        
+        let button = UIBarButtonItem(title: "Done",
+                                     style: .done,
+                                     target: self,
+                                     action: #selector(dismissKB))
+        
+        toolBar.setItems([button], animated: true)
+        toolBar.isUserInteractionEnabled = true
+        toolBar.sizeToFit()
+        
+        redColorTextField.inputAccessoryView = toolBar
+        greenColorTextField.inputAccessoryView = toolBar
+        blueColorTextField.inputAccessoryView = toolBar
+    }
+    
+    @objc func dismissKB() {
+       view.endEditing(true)
+     }
+}
+
+extension ColorPickerViewController: UITextFieldDelegate {
+    
 }
