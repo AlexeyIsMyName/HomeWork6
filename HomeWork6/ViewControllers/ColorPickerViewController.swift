@@ -60,24 +60,29 @@ class ColorPickerViewController: UIViewController {
     }
     
     @IBAction func doneButtonPressed() {
-        let color = UIColor(red: CGFloat(redColorTextField.text),
-                            green: CGFloat(greenColorTextField.text),
-                            blue: CGFloat(blueColorTextField.text),
-                            alpha: 1.0)
-        
-        delegate.setNewValues(for: color)
-        dismiss(animated: true)
-    }
-    
-    @IBAction func colorTFEditingDidEnd() {
         mainColor = UIColor(red: CGFloat(redColorTextField.text),
                             green: CGFloat(greenColorTextField.text),
                             blue: CGFloat(blueColorTextField.text),
                             alpha: 1.0)
         
-        refreshAllOnScreen()
+        delegate.setNewValues(for: mainColor)
+        dismiss(animated: true)
     }
     
+    @IBAction func colorTFEditingDidEnd() {
+//        let redColor = CGFloat(redColorTextField.text)
+        
+        let redColor = CGFloat(getRightFloat(from: redColorTextField.text))
+        let greenColor = CGFloat(getRightFloat(from: greenColorTextField.text))
+        let blueColor = CGFloat(getRightFloat(from: blueColorTextField.text))
+        
+        mainColor = UIColor(red: redColor <= 1 ? redColor : showWrongColorAlarm(),
+                            green: greenColor <= 1 ? greenColor : showWrongColorAlarm(),
+                            blue: blueColor <= 1 ? blueColor : showWrongColorAlarm(),
+                            alpha: 1.0)
+        
+        refreshAllOnScreen()
+    }
     
     // MARK: - Private Methods
     private func refreshAllOnScreen() {
@@ -109,6 +114,34 @@ class ColorPickerViewController: UIViewController {
                 green: color.cgColor.components?[1] ?? 1,
                 blue: color.cgColor.components?[2] ?? 1)
     }
+    
+    private func getRightFloat(from text: String?) -> Float {
+        
+        guard let unwrapedtext = text else { return 1 }
+        
+        var string = ""
+        
+        for char in unwrapedtext {
+            if char == "," {
+                string.append(".")
+            } else {
+                string.append(char)
+            }
+        }
+        
+        return Float(string) ?? 1
+    }
+    
+    private func showWrongColorAlarm() -> CGFloat {
+        let alert = UIAlertController(title: "Wrong Format",
+                                      message: "Please write color as float number like 0.50 and number must be less or equal to 1 Color is set by 1",
+                                      preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK",
+                                      style: .default))
+        present(alert, animated: true, completion: nil)
+        
+        return 1
+    }
 }
 
 // MARK: - Extensions
@@ -125,7 +158,7 @@ extension CGFloat {
     
     init(_ text: String?) {
         guard let number = Float(text ?? "") else {
-            self = 1.0
+            self = 1
             return
         }
         
@@ -158,5 +191,7 @@ extension ColorPickerViewController {
 }
 
 extension ColorPickerViewController: UITextFieldDelegate {
-    
+    func textFieldDidEndEditing(_ textField: UITextField) {
+        colorTFEditingDidEnd()
+    }
 }
