@@ -89,9 +89,12 @@ class ColorPickerViewController: UIViewController {
     
     // #3
     private func refreshDataOnSliders() {
-        redColorSlider.value = Float(getCGFloatColors(from: mainColor).red)
-        greenColorSlider.value = Float(getCGFloatColors(from: mainColor).green)
-        blueColorSlider.value = Float(getCGFloatColors(from: mainColor).blue)
+        redColorSlider.setValue(Float(getCGFloatColors(from: mainColor).red),
+                                animated: true)
+        greenColorSlider.setValue(Float(getCGFloatColors(from: mainColor).green),
+                                  animated: true)
+        blueColorSlider.setValue(Float(getCGFloatColors(from: mainColor).blue),
+                                 animated: true)
     }
     
     // #4

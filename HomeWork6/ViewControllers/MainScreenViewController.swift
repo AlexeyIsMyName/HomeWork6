@@ -18,9 +18,7 @@ class MainScreenViewController: UIViewController {
                                     blue: 0,
                                     alpha: 1)
     
-    override func viewWillAppear(_ animated: Bool) {
-        super .viewWillAppear(animated)
-        
+    override func viewDidLoad() {
         refreshViewBGColor()
     }
     
