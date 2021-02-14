@@ -20,20 +20,24 @@ class ColorPickerViewController: UIViewController {
     @IBOutlet var greenColorSlider: UISlider!
     @IBOutlet var blueColorSlider: UISlider!
     
+    // MARK: - Public Properties
     var mainColor: UIColor!
     var delegate: SettingsViewControllerDelegate!
     
-    // MARK: - Life Cycles Methods
+    // MARK: - Private Properties
+    private let defaultColorNumber: CGFloat = 0
+    
+    // MARK: - Life Cyrcle Methods
     override func viewWillLayoutSubviews() {
         colorPresenterView.layer.cornerRadius = view.frame.height * 0.02
     }
     
     override func viewDidLoad() {
-        refreshAllOnScreen()
-        addBtnInKeyboard()
         redColorTextField.delegate = self
         greenColorTextField.delegate = self
         blueColorTextField.delegate = self
+        addBtnInKeyboard()
+        refreshAllOnScreen()
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -60,68 +64,73 @@ class ColorPickerViewController: UIViewController {
     }
     
     @IBAction func doneButtonPressed() {
-        mainColor = UIColor(red: CGFloat(redColorTextField.text),
-                            green: CGFloat(greenColorTextField.text),
-                            blue: CGFloat(blueColorTextField.text),
-                            alpha: 1.0)
-        
+        updateMainColorWithDataFromTextFields()
         delegate.setNewValues(for: mainColor)
         dismiss(animated: true)
     }
     
     @IBAction func colorTFEditingDidEnd() {
-//        let redColor = CGFloat(redColorTextField.text)
-        
-        let redColor = CGFloat(getRightFloat(from: redColorTextField.text))
-        let greenColor = CGFloat(getRightFloat(from: greenColorTextField.text))
-        let blueColor = CGFloat(getRightFloat(from: blueColorTextField.text))
-        
-        mainColor = UIColor(red: redColor <= 1 ? redColor : showWrongColorAlarm(),
-                            green: greenColor <= 1 ? greenColor : showWrongColorAlarm(),
-                            blue: blueColor <= 1 ? blueColor : showWrongColorAlarm(),
-                            alpha: 1.0)
-        
+        updateMainColorWithDataFromTextFields()
         refreshAllOnScreen()
     }
     
     // MARK: - Private Methods
+    // #1
     private func refreshAllOnScreen() {
         refreshColorPresenterViewColor()
-        refreshDataOnLabels()
         refreshDataOnSliders()
+        refreshDataOnLabels()
     }
     
+    // #2
     private func refreshColorPresenterViewColor() {
         colorPresenterView.backgroundColor = mainColor
     }
     
+    // #3
     private func refreshDataOnSliders() {
-        redColorSlider.value = Float(getFloatColor(from: mainColor).red)
-        greenColorSlider.value = Float(getFloatColor(from: mainColor).green)
-        blueColorSlider.value = Float(getFloatColor(from: mainColor).blue)
+        redColorSlider.value = Float(getCGFloatColors(from: mainColor).red)
+        greenColorSlider.value = Float(getCGFloatColors(from: mainColor).green)
+        blueColorSlider.value = Float(getCGFloatColors(from: mainColor).blue)
     }
     
+    // #4
     private func refreshDataOnLabels() {
-        let color = getFloatColor(from: mainColor)
+        let color = getCGFloatColors(from: mainColor)
         
         redColorTextField.text = color.red.getShortString()
         greenColorTextField.text = color.green.getShortString()
         blueColorTextField.text = color.blue.getShortString()
     }
-
-    private func getFloatColor(from color: UIColor) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
-        return (red: color.cgColor.components?[0] ?? 1,
-                green: color.cgColor.components?[1] ?? 1,
-                blue: color.cgColor.components?[2] ?? 1)
+    
+    // #5
+    private func updateMainColorWithDataFromTextFields() {
+        let redColor = CGFloat(getRightFloat(from: redColorTextField.text))
+        let greenColor = CGFloat(getRightFloat(from: greenColorTextField.text))
+        let blueColor = CGFloat(getRightFloat(from: blueColorTextField.text))
+        
+        // checking if the numbers is not appropriate for CGColor Format
+        mainColor = UIColor(red: redColor <= 1 ? redColor : showWrongColorAlarm(),
+                            green: greenColor <= 1 ? greenColor : showWrongColorAlarm(),
+                            blue: blueColor <= 1 ? blueColor : showWrongColorAlarm(),
+                            alpha: 1.0)
     }
     
+    private func getCGFloatColors(from color: UIColor) -> (red: CGFloat, green: CGFloat, blue: CGFloat) {
+        return (red: color.cgColor.components?[0] ?? defaultColorNumber,
+                green: color.cgColor.components?[1] ?? defaultColorNumber,
+                blue: color.cgColor.components?[2] ?? defaultColorNumber)
+    }
+    
+    // HOTFIX to replace comma to dot for the reason to be readable in Float Format then
     private func getRightFloat(from text: String?) -> Float {
-        
-        guard let unwrapedtext = text else { return 1 }
+        guard let unwrapedText = text else {
+            return Float(showWrongColorAlarm())
+        }
         
         var string = ""
         
-        for char in unwrapedtext {
+        for char in unwrapedText {
             if char == "," {
                 string.append(".")
             } else {
@@ -129,54 +138,38 @@ class ColorPickerViewController: UIViewController {
             }
         }
         
-        return Float(string) ?? 1
+        return Float(string) ?? Float(showWrongColorAlarm())
     }
     
+    // Alarm
     private func showWrongColorAlarm() -> CGFloat {
-        let alert = UIAlertController(title: "Wrong Format",
-                                      message: "Please write color as float number like 0.50 and number must be less or equal to 1 Color is set by 1",
+        let alert = UIAlertController(title: "Wrong Format of color number",
+                                      message: "Color number must be from 0 to 1 (example: 0.50). \nColor is set by default (\(defaultColorNumber))",
                                       preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK",
                                       style: .default))
         present(alert, animated: true, completion: nil)
         
-        return 1
+        return defaultColorNumber
     }
 }
 
-// MARK: - Extensions
-extension Float {
-    func getShortString() -> String {
-        return String(format: "%.2f", self)
-    }
-}
-
-extension CGFloat {
-    func getShortString() -> String {
-        return String(format: "%.2f", self)
-    }
-    
-    init(_ text: String?) {
-        guard let number = Float(text ?? "") else {
-            self = 1
-            return
-        }
-        
-        self = CGFloat(number)
-    }
-}
-
+// MARK: - Extension Done Buttom for keyboard
 extension ColorPickerViewController {
     private func addBtnInKeyboard() {
-        
         let toolBar = UIToolbar()
         
-        let button = UIBarButtonItem(title: "Done",
+        let doneButton = UIBarButtonItem(title: "Done",
                                      style: .done,
                                      target: self,
                                      action: #selector(dismissKB))
         
-        toolBar.setItems([button], animated: true)
+        let cleartButton = UIBarButtonItem(title: "Clear",
+                                           style: .done,
+                                           target: self,
+                                           action: #selector(clearCurrentTF))
+        
+        toolBar.setItems([doneButton, cleartButton], animated: false)
         toolBar.isUserInteractionEnabled = true
         toolBar.sizeToFit()
         
@@ -186,12 +179,40 @@ extension ColorPickerViewController {
     }
     
     @objc func dismissKB() {
-       view.endEditing(true)
-     }
+        view.endEditing(true)
+    }
+    
+    @objc func clearCurrentTF() {
+        if redColorTextField.isEditing {
+            redColorTextField.text = nil
+        }
+        
+        if greenColorTextField.isEditing {
+            greenColorTextField.text = nil
+        }
+        
+        if blueColorTextField.isEditing {
+            blueColorTextField.text = nil
+        }
+    }
 }
 
+// MARK: - Extension UITextFieldDelegate
 extension ColorPickerViewController: UITextFieldDelegate {
     func textFieldDidEndEditing(_ textField: UITextField) {
         colorTFEditingDidEnd()
+    }
+}
+
+// MARK: - Extensions for Float/CGFloat
+extension Float {
+    func getShortString() -> String {
+        return String(format: "%.2f", self)
+    }
+}
+
+extension CGFloat {
+    func getShortString() -> String {
+        return String(format: "%.2f", self)
     }
 }
